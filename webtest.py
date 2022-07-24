@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from bs4.element import Comment
 from urllib.request import Request, urlopen
-from docx import Document
+#from docx import Document
 
 
 url = 'https://www.creepypasta.com/if-youre-armed-and-at-the-glenmont-metro-please-shoot-me/'
@@ -27,12 +27,14 @@ def text_from_html(body):
     #return " ".join(t.strip() for t in visible_texts)
     #print(u" ".join(g.strip() for g in visible_texts))
     text_to_doc = []
-    for g in visible_texts: #goes through all the texts found
-        if not g.isspace(): #filters out all the whitespace
-            #print("/////////////////////")
-            #print((g.strip()))
+    with open (text_file, 'a') as goods: #Appends to the file rather than overwriting
+        for g in visible_texts: #goes through all the texts found
+            if not g.isspace(): #filters out all the whitespace
+                #print("/////////////////////")
+                bold_words_html(g)
 
-            with open (text_file, 'a') as goods: #Appends to the file rather than overwriting
+
+
                 goods.write("\n\n") #goods is the file, write two spaces to file
                 try:
                     goods.write(str(g.strip()))
@@ -40,6 +42,17 @@ def text_from_html(body):
                 except UnicodeEncodeError:
                     pass
                     #goods.write(str((g.strip()).encode('utf-8')))
+
+def bold_words_html(str):
+    words_list = []
+    for word in str.strip().split(" "):
+        #if word.isalnum():
+        if word:
+            word = "<b>" + word[:len(word)//2] + "</b>" + word[len(word)//2:]
+        words_list.append(word)
+    sentence = " ".join(words_list)
+    print(sentence)
+
 
 def break_up(stuff):
     string = stuff
@@ -55,7 +68,7 @@ def bold(stuff):
         good_word = first + last        #Combines the bolded first half and the last half
         temp.append(good_word)          #puts the modified word into a list
     sentence = " ".join(temp)           #joins all the stuff in the list into a sentence
-    print(sentence)                     #Outputs the sentence
+    #print(sentence)                     #Outputs the sentence
 
 def word_doc(bold):
     doc = Document()
