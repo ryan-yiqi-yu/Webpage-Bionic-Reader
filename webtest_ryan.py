@@ -5,7 +5,7 @@ from urllib.request import Request, urlopen
 import html
 
 
-url = 'https://www.creepypasta.com/if-youre-armed-and-at-the-glenmont-metro-please-shoot-me/'
+url = 'https://en.wikipedia.org/wiki/Welsh_Corgi'
 text_file = 'sitedata.txt'
 
 def tag_visible(element):
@@ -26,11 +26,16 @@ def bold_html(body):
     for data in filter(tag_visible, texts):
         if data.isspace():
             continue
-
-        data.append(' butt ')
+        #new_tag = soup.new_tag("a", href="http://www.example.com")
+        #print(type(soup.b))
+        #soup.b.append(new_tag)
+        #new_tag.string = "Link text."
         #data.decompose()
+        data.replace_with(bold_words_html(data))
+        #print(soup.prettify(formatter=None))
     with open("output1.html", "w") as file:
-        file.write(str(soup))
+        file.write(soup.prettify(formatter=None))
+
 
 
 def text_from_html(body):
@@ -63,7 +68,7 @@ def bold_words_html(str):
     for word in str.strip().split(" "):
         #if word.isalnum():
         if word:
-            word = "<b>" + word[:len(word)//2] + "\</b\>" + word[len(word)//2:]
+            word = "<b>" + word[:len(word)//2] + "</b>" + word[len(word)//2:]
         words_list.append(word)
     sentence = " ".join(words_list)
     return sentence
